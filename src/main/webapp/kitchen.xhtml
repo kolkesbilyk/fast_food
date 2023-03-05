@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+  <title>Kitchen</title>
+</h:head>
+<h:body>
+  <h:form id="KitchenForm">
+    <p:dataTable id="orderDt" value="#{kitchenView.orders}" var="order" rowKey="#{order.id}" tableStyle="table-layout: auto">
+      <p:column headerText="Action" style="width: 1px; white-space: nowrap;">
+        <p:commandButton icon="fa fa-edit" style="width: 30px"
+
+            oncomplete="PF('dlg1').show()"
+        >
+          <f:setPropertyActionListener target="#{order}" value="#{kitchenView.selectedOrder}"/>
+          <f:param name="order_id" value="#{order.id}"/>
+        </p:commandButton>
+      </p:column>
+      <p:column headerText="Created" sortBy="#{order.created}" style="width: 1px; white-space: nowrap;" >
+        <h:outputText value="#{order.created}"/>
+      </p:column>
+    </p:dataTable>
+    <div class="card">
+      <h5>Basic</h5>
+      <p:commandButton value="Show" type="button" icon="pi pi-external-link" onclick="PF('dlg1').show()"/>
+
+      <h5>Modal</h5>
+      <p:commandButton value="Show" type="button" icon="pi pi-external-link" onclick="PF('dlg2').show()"/>
+
+      <h5>Button Bar</h5>
+      <p:commandButton value="Show" type="button" icon="pi pi-external-link" onclick="PF('dlg3').show()"/>
+
+      <h5>Minimize and Maximize</h5>
+      <p:commandButton value="Show" type="button" icon="pi pi-external-link" onclick="PF('dlg4').show()"/>
+    </div>
+
+  </h:form>
+
+<!--  <h:form id="dlgOrderDetails">-->
+<!--    <p:dialog header="Orders" widgetVar="orderDetailsDialog" resizable="false" modal="true" onHide="rc_cancel();" closable="true">-->
+<!--      <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" style="width: 1400px">-->
+<!--        <h:outputText value="Order Id" style="font-weight: bold"/>-->
+<!--        <h:outputText value="#{kitchenView.selectedOrder.id}"/>-->
+<!--        <h:outputText value="Dishes" style="font-weight: bold"/>-->
+<!--        <p:dataTable var="dish" value="#{kitchenView.selectedOrder.dishes}">-->
+<!--          <p:column >-->
+<!--            <h:outputText value="#{dish.name}"/>-->
+<!--          </p:column>-->
+<!--        </p:dataTable>-->
+<!--      </p:panelGrid>-->
+<!--    </p:dialog>-->
+<!--    <p:remoteCommand name="rc_cancel" update="dlgOrderDetails"/>-->
+<!--  </h:form>-->
+
+  <p:dialog header="Header" widgetVar="dlg1" minHeight="40" width="350" showEffect="fade">
+    <p class="m-0">#{orderView.order}</p>
+  </p:dialog>
+
+  <p:dialog header="Header" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade" modal="true">
+    <p class="m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </p:dialog>
+
+  <p:dialog header="Header" widgetVar="dlg3" minHeight="40" width="350" showEffect="fade">
+    <p class="m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <f:facet name="footer">
+      <p:commandButton type="button" value="No" styleClass="ui-button-flat mr-2" style="width: 6rem" />
+      <p:commandButton type="button" value="Yes" style="width: 5rem" />
+    </f:facet>
+  </p:dialog>
+
+  <p:dialog header="Header" widgetVar="dlg4" minHeight="40" width="350" showEffect="fade" minimizable="true" maximizable="true">
+    <p class="m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </p:dialog>
+</h:body>
+</html>
