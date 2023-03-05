@@ -1,20 +1,14 @@
 package com.fastfood.fastfood.config;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
 
+@ApplicationScoped
 public class ConfigServiceImpl implements ConfigService {
 
     private Properties properties;

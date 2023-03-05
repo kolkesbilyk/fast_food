@@ -16,7 +16,7 @@ public class DishDAO implements Serializable {
     public List<Dish> getDishesByMenuId(int menuId){
         List<Dish> dishes = new ArrayList<>();
         String sql = "SELECT * from back.dishes WHERE id_menu = ?";
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
+        try(Connection connection = ConnectionPool.getConn();
             PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setInt(1, menuId);
             try(ResultSet rs = ps.executeQuery()){
@@ -31,7 +31,7 @@ public class DishDAO implements Serializable {
     }
 
     public Dish getDishById(int id) throws SQLException {
-        try(Connection connection = ConnectionPool.getInstance().getConnection()){
+        try(Connection connection = ConnectionPool.getConn()){
             return getDishById(connection, id);
         }
     }
@@ -56,7 +56,7 @@ public class DishDAO implements Serializable {
     public List<Dish> getAllDishes(){
         List<Dish> dishes = new ArrayList<>();
         String sql = "SELECT * from back.dishes";
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
+        try(Connection connection = ConnectionPool.getConn();
             PreparedStatement ps = connection.prepareStatement(sql)){
             try(ResultSet rs = ps.executeQuery()){
                 while (rs.next()){

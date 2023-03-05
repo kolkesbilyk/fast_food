@@ -1,18 +1,21 @@
 package com.fastfood.fastfood.entity;
 
-import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
+import java.sql.SQLTransientException;
 
 import javax.inject.Inject;
 
 import com.fastfood.fastfood.config.ConfigService;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 public final class ConnectionPool {
 
-    private static ConnectionPool instance;
+    private static volatile HikariDataSource hikariDataSource;
+    public static final int IDLE_TIMEOUT = 30000;
+    public static final int CONNECTION_TIMEOUT = 500;
 
     @Inject
     private ConfigService config;
@@ -21,34 +24,52 @@ public final class ConnectionPool {
 
     }
 
-    public static ConnectionPool getInstance(){
-        if (instance == null){
-            instance = new ConnectionPool();
-        }
-        return instance;
+    public static Connection getConn() throws SQLException {
+        return getConn(true, IDLE_TIMEOUT);
     }
 
-    public Connection getConnection() {
-        System.out.println("Start create connection......");
-        Connection connection = null;
-        try {
-            if (config != null) {
-                System.out.println(config.getProperties());
-                Class.forName(config.getProperties().getProperty("db_driver"));
-                connection = DriverManager.getConnection(config.getProperties().getProperty("db_host") + config.getProperties().getProperty("db_name"),
-                    config.getProperties().getProperty("db_login"),
-                    config.getProperties().getProperty("db_password"));
-            }else {
-                Class.forName("org.postgresql.Driver");
-                connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + "fast_food",
-                    "postgres",
-                    "postgres");
-                System.out.println("Opened connection to db");
+    public static Connection getConn(boolean autoCommit, int milliSeconds) throws SQLException{
+        try{
+            if (hikariDataSource == null){
+                hikariDataSource = getDataSource();
             }
-        } catch (ClassNotFoundException | SQLException e) {
-            System.err.println("Error connection to db" + e);
+            Connection conn = hikariDataSource.getConnection();
+            conn.setNetworkTimeout(null, milliSeconds);
+            if (!autoCommit){
+                conn.setAutoCommit(false);
+            }
+            return conn;
+        }catch (SQLTransientException e){
+            throw e;
+        }catch (Exception e){
+            if (hikariDataSource != null){
+                try{
+                    hikariDataSource.close();
+                }catch (Exception exception){
+                    e.printStackTrace();
+                }
+            }
+            hikariDataSource = null;
             e.printStackTrace();
+            throw e;
         }
-        return connection;
+    }
+
+    private synchronized static HikariDataSource getDataSource(){
+        if (hikariDataSource != null){
+            return hikariDataSource;
+        }
+        HikariConfig jdbcConfig = new HikariConfig();
+        jdbcConfig.setPoolName("BACK");
+        jdbcConfig.setIdleTimeout(IDLE_TIMEOUT);
+        jdbcConfig.setConnectionTimeout(CONNECTION_TIMEOUT);
+        jdbcConfig.setMaximumPoolSize(25);
+        jdbcConfig.setMinimumIdle(2);
+        jdbcConfig.setJdbcUrl("jdbc:postgresql://localhost:5432/fast_food");
+        jdbcConfig.setUsername("postgres");
+        jdbcConfig.setPassword("postgres");
+        HikariDataSource dataSource = new HikariDataSource(jdbcConfig);
+        System.out.println("New Hikari connection pool created");
+        return dataSource;
     }
 }

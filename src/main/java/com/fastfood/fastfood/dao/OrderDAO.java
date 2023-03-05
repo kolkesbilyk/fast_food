@@ -22,7 +22,7 @@ public class OrderDAO implements Serializable {
 
     public void saveOrderDishes(Order order){
         String sql = "INSERT INTO back.orders (total_sum, dop_info) VALUES (?, ?) RETURNING id, created";
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
+        try(Connection connection = ConnectionPool.getConn();
             PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setDouble(1, order.getTotalSum());
             ps.setString(2, order.getDopInfo() == null ? "order without info" : order.getDopInfo());
@@ -52,7 +52,7 @@ public class OrderDAO implements Serializable {
     public List<Order> getOrders(){
         List<Order> orders = new ArrayList<>();
         String sql = "SELECT DISTINCT o.id FROM back.order_dishes od, back.orders o WHERE o.id = od.order_id AND o.ready_time IS NULL";
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
+        try(Connection connection = ConnectionPool.getConn();
             Statement ps = connection.createStatement()){
             try(ResultSet rs = ps.executeQuery(sql)){
                 while (rs.next()){
@@ -72,7 +72,7 @@ public class OrderDAO implements Serializable {
             + "WHERE o.id = ? AND\n"
             + "      o.id = od.order_id AND"
             + "      o.changed IS NULL ;";
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
+        try(Connection connection = ConnectionPool.getConn();
             PreparedStatement ps = connection.prepareStatement(sql)){
                 ps.setLong(1, id);
                 try(ResultSet rs = ps.executeQuery()){

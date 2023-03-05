@@ -22,7 +22,7 @@ public class MenuDAO implements Serializable {
     public List<Menu> getMenuList(){
         List<Menu> menuList = new ArrayList<>();
         String sql = "SELECT * from back.dir_menu;";
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
+        try(Connection connection = ConnectionPool.getConn();
             Statement ps = connection.createStatement()){
             try(ResultSet rs = ps.executeQuery(sql)){
                 while (rs.next()){
