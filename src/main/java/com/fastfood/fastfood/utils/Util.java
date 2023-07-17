@@ -1,20 +1,36 @@
-package com.fastfood.fastfood.service;
+package com.fastfood.fastfood.utils;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
-public class ImageServiceImpl {
+public class Util {
+
+    public static InputStream getResourcesAsStream(String path) throws FileNotFoundException {
+        InputStream stream = null;
+        try{
+            stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+            if (stream == null){
+                stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(path.replace("\\", "/"));
+            }
+        }catch (Exception ignored){
+            System.err.println("Error " + ignored.getMessage());
+        }
+        return stream == null ? new FileInputStream(path) : stream;
+    }
 
     /*
     метод отримує картинку та зжимає її до необхідних розмірів
     параметри :
         imagePathToRead - картинка яка приходе;
         imagePathToWrite - картинка на виході;
-        resizeWidth - необхіжна ширина картинки;
+        resizeWidth - необхідна ширина картинки;
         resizeHeight - висота
      */
     public static void correctSizeImage(String imagePathToRead, String imagePathToWrite, int resizeWidth, int resizeHeight) throws IOException {

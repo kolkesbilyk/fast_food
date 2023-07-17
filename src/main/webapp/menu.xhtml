@@ -10,6 +10,20 @@
 
 <h:head>
     <title>Menu</title>
+  <style type="">
+    .product-item .product-item-content {
+      border: 1px solid var(--surface-d);
+      border-radius: 3px;
+      margin: .3rem;
+      text-align: center;
+      padding: 2rem 0;
+    }
+
+    .product-item .product-image {
+      width: 50%;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+    }
+  </style>
 </h:head>
 <h:body styleClass="login-body" >
 
@@ -22,7 +36,7 @@
 
         <div class="product">
           <div class="product-list-item p-5">
-            <p:graphicImage name="images/menu.png"/>
+            <p:graphicImage name="#{dish.image}"/>
             <div class="product-list-detail">
               <div class="product-name">#{dish.name}</div>
               <i class="pi pi-tag product-category-icon"/><span
@@ -42,7 +56,7 @@
       <c:if test="#{menuView.selectDishes.size() > 0}">
       <div class="card">
         <p:commandButton id="pay" value="Pay order" style="background-color: green" update="@form" icon="pi pi-check" actionListener="#{menuView.payOrder()}"/>
-        <p:carousel value="#{menuView.selectDishes}" var="dish" numVisible="7">
+        <p:carousel value="#{menuView.selectDishes}" var="dish" numVisible="3" numScroll="1">
 
           <f:facet name="header">
             <h5>Your order total sum #{menuView.totalSum} $</h5>
@@ -69,6 +83,6 @@
       </c:if>
     </h:form>
   </div>
-<!--  <h:outputStylesheet name="css/style.css"/>-->
+<!--<h:outputStylesheet name="css/style.css"/>-->
 </h:body>
 </html>

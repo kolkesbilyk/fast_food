@@ -7,6 +7,7 @@ import java.sql.SQLTransientException;
 
 import javax.inject.Inject;
 
+import com.fastfood.fastfood.config.AppProperties;
 import com.fastfood.fastfood.config.ConfigService;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -65,9 +66,9 @@ public final class ConnectionPool {
         jdbcConfig.setConnectionTimeout(CONNECTION_TIMEOUT);
         jdbcConfig.setMaximumPoolSize(25);
         jdbcConfig.setMinimumIdle(2);
-        jdbcConfig.setJdbcUrl("jdbc:postgresql://localhost:5432/fast_food");
-        jdbcConfig.setUsername("postgres");
-        jdbcConfig.setPassword("postgres");
+        jdbcConfig.setJdbcUrl(AppProperties.getProperty("db_host") + AppProperties.getProperty("db_name"));
+        jdbcConfig.setUsername(AppProperties.getProperty("db_login"));
+        jdbcConfig.setPassword(AppProperties.getProperty("db_password"));
         HikariDataSource dataSource = new HikariDataSource(jdbcConfig);
         System.out.println("New Hikari connection pool created");
         return dataSource;

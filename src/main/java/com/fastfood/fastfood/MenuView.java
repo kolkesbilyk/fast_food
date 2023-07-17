@@ -13,6 +13,7 @@ import com.fastfood.fastfood.dao.DishDAO;
 import com.fastfood.fastfood.dao.OrderDAO;
 import com.fastfood.fastfood.entity.Dish;
 import com.fastfood.fastfood.entity.Order;
+import org.primefaces.model.ResponsiveOption;
 
 @Named
 @SessionScoped
@@ -22,6 +23,8 @@ public class MenuView implements Serializable {
     private OrderDAO orderDAO;
     @Inject
     private DishDAO dishDAO;
+
+    private List<ResponsiveOption> responsiveOptions;
 
     private double totalSum;
     private List<Dish> selectDishes;
@@ -33,6 +36,11 @@ public class MenuView implements Serializable {
         selectDishes = new ArrayList<>();
         dishes = new ArrayList<>();
         dishes.addAll(dishDAO.getAllDishes());
+
+        responsiveOptions = new ArrayList<>();
+        responsiveOptions.add(new ResponsiveOption("560px", 3, 3));
+        responsiveOptions.add(new ResponsiveOption("560px", 2, 2));
+        responsiveOptions.add(new ResponsiveOption("560px", 1, 1));
     }
 
     public void payOrder(){
@@ -92,5 +100,13 @@ public class MenuView implements Serializable {
 
     public void setTotalSum(double totalSum) {
         this.totalSum = totalSum;
+    }
+
+    public List<ResponsiveOption> getResponsiveOptions() {
+        return responsiveOptions;
+    }
+
+    public void setResponsiveOptions(List<ResponsiveOption> responsiveOptions) {
+        this.responsiveOptions = responsiveOptions;
     }
 }

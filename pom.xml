@@ -36,7 +36,7 @@
     <dependency>
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
-      <version>9.2.2</version>
+      <version>9.16.0</version>
     </dependency>
     <dependency>
       <groupId>org.primefaces</groupId>
@@ -106,22 +106,28 @@
     <dependency>
       <groupId>org.jboss.arquillian.junit5</groupId>
       <artifactId>arquillian-junit5-container</artifactId>
-      <version>1.7.0.Alpha10</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.protocol</groupId>
-      <artifactId>arquillian-protocol-servlet-jakarta</artifactId>
-      <version>1.7.0.Alpha5</version>
+      <version>1.7.0.Alpha14</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jboss.arquillian.container</groupId>
-      <artifactId>arquillian-weld-embedded</artifactId>
-      <version>3.0.0.Final</version>
+      <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+      <version>1.0.0.CR9</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-core-impl</artifactId>
-      <version>3.1.1.Final</version>
+      <artifactId>weld-core</artifactId>
+      <version>2.4.8.Final</version>
+      <scope>test</scope>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+      <version>3.1.4</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -131,6 +137,17 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <version>3.3.2</version>
+        <configuration>
+          <warName>
+            FastFood
+          </warName>
+          <webResources>
+            <resource>
+              <directory>src/main/resources</directory>
+              <targetPath>/</targetPath>
+            </resource>
+          </webResources>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.flywaydb</groupId>

@@ -5,5 +5,5 @@ import java.util.Properties;
 
 public interface ConfigService extends Serializable {
     void initProperties();
-    Properties getProperties();
+    String getProperty(String key);
 }

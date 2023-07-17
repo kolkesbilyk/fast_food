@@ -113,6 +113,10 @@ body{
     text-decoration: none
 }
 
+#ui-carousel-items-container{
+  transform: none !important;
+}
+
 .exception-wrapper{
     margin: 0 auto;
     width: 500px;
