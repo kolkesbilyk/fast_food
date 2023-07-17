@@ -100,4 +100,8 @@ public class Order {
             ", dopInfo='" + dopInfo + '\'' +
             '}';
     }
+
+    public enum Status {
+        REGISTERED, PAID, IN_WORK, DONE, ISSUED
+    }
 }

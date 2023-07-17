@@ -1,4 +1,4 @@
-package com.fastfood.fastfood;
+package com.fastfood.fastfood.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import com.fastfood.fastfood.dao.DishDAO;
 import com.fastfood.fastfood.dao.OrderDAO;
 import com.fastfood.fastfood.entity.Dish;
 import com.fastfood.fastfood.entity.Order;
+import com.fastfood.fastfood.service.PaymentService;
 import org.primefaces.model.ResponsiveOption;
 
 @Named
@@ -23,6 +24,8 @@ public class MenuView implements Serializable {
     private OrderDAO orderDAO;
     @Inject
     private DishDAO dishDAO;
+    @Inject
+    private PaymentService paymentService;
 
     private List<ResponsiveOption> responsiveOptions;
 
@@ -47,8 +50,11 @@ public class MenuView implements Serializable {
         Order order = new Order();
         order.setDishes(selectDishes);
         order.setTotalSum(totalSum);
+
         orderDAO.saveOrderDishes(order);
-        System.out.println("you buy " + selectDishes);
+
+        paymentService.makePay(order.getId(), totalSum);
+
         selectDishes.clear();
         totalSum = 0;
     }

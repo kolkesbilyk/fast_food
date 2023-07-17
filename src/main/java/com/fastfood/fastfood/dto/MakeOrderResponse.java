@@ -1,4 +1,4 @@
-package com.fastfood.fastfood;
+package com.fastfood.fastfood.dto;
 
 public class MakeOrderResponse{
     private long order_id;

@@ -8,7 +8,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 public class Util {
 
@@ -48,5 +51,20 @@ public class Util {
             .lastIndexOf(".") + 1);
 
         ImageIO.write(bufferedImageOutput, formatName, new File(imagePathToWrite));
+    }
+
+    public static void redirect(String url) {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(getHTTPContext() + url);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public static String getHTTPContext() {
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        HttpServletRequest serreq = (HttpServletRequest) ctx.getExternalContext().getRequest();
+        String url = ((new HttpServletRequestWrapper(serreq)).getRequestURL()).toString();
+        return url.substring(0, url.indexOf("/", 9)) + serreq.getContextPath();
     }
 }

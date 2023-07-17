@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import com.fastfood.fastfood.entity.ConnectionPool;
 import com.fastfood.fastfood.entity.Dish;
 import com.fastfood.fastfood.entity.Order;
+import com.fastfood.fastfood.entity.Order.Status;
 
 public class OrderDAO implements Serializable {
 
@@ -25,7 +26,7 @@ public class OrderDAO implements Serializable {
         try(Connection connection = ConnectionPool.getConn();
             PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setDouble(1, order.getTotalSum());
-            ps.setString(2, order.getDopInfo() == null ? "order without info" : order.getDopInfo());
+            ps.setString(2, order.getDopInfo());
             try(ResultSet rs = ps.executeQuery()){
                 if (rs.next()) {
                     order.setId(rs.getLong("id"));
@@ -35,6 +36,18 @@ public class OrderDAO implements Serializable {
             saveOrderDishes(connection, order);
         }catch (SQLException e){
             e.printStackTrace();
+        }
+    }
+
+    public void changeOrderStatus(long orderID, Status status){
+        String sql = "UPDATE back.orders SET status = ?, changed = now() WHERE id = ?";
+        try(Connection connection = ConnectionPool.getConn();
+            PreparedStatement ps = connection.prepareStatement(sql)){
+            ps.setString(1, status.name());
+            ps.setLong(2, orderID);
+            ps.executeUpdate();
+        }catch (SQLException e){
+            System.err.println("Error update status for order: " + orderID + ", cause: " + e.getMessage());
         }
     }
 

@@ -6,8 +6,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import com.fastfood.fastfood.MakeOrderRequest;
-import com.fastfood.fastfood.MakeOrderResponse;
+import com.fastfood.fastfood.dto.MakeOrderRequest;
+import com.fastfood.fastfood.dto.MakeOrderResponse;
 import com.fastfood.fastfood.dao.DishDAO;
 import com.fastfood.fastfood.dao.OrderDAO;
 import com.fastfood.fastfood.entity.Dish;
@@ -19,6 +19,8 @@ public class MakeOrderServiceImpl implements MakeOrderService{
     private DishDAO dishDAO;
     @Inject
     private OrderDAO orderDAO;
+    @Inject
+    private PaymentService paymentService;
 
     @Override
     public MakeOrderResponse makeOrder(MakeOrderRequest request) throws SQLException {
@@ -32,7 +34,10 @@ public class MakeOrderServiceImpl implements MakeOrderService{
         Order order = new Order();
         order.setDishes(dishes);
         order.setTotalSum(total_sum);
+        order.setDopInfo(request.getExternalOrderId());
         orderDAO.saveOrderDishes(order);
+
+        paymentService.makePay(order.getId(), total_sum);
 
         MakeOrderResponse response = new MakeOrderResponse();
         response.setOrder_id(order.getId());

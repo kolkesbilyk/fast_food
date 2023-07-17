@@ -1,4 +1,4 @@
-package com.fastfood.fastfood;
+package com.fastfood.fastfood.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
