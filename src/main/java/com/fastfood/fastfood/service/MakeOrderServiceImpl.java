@@ -12,6 +12,7 @@ import com.fastfood.fastfood.dao.DishDAO;
 import com.fastfood.fastfood.dao.OrderDAO;
 import com.fastfood.fastfood.entity.Dish;
 import com.fastfood.fastfood.entity.Order;
+import com.fastfood.fastfood.entity.Order.Status;
 
 public class MakeOrderServiceImpl implements MakeOrderService{
 
@@ -37,11 +38,15 @@ public class MakeOrderServiceImpl implements MakeOrderService{
         order.setDopInfo(request.getExternalOrderId());
         orderDAO.saveOrderDishes(order);
 
-        paymentService.makePay(order.getId(), total_sum);
-
         MakeOrderResponse response = new MakeOrderResponse();
         response.setOrder_id(order.getId());
         response.setTotal_sum(order.getTotalSum());
         return response;
+    }
+
+    @Override
+    public void payOrder(long order_id, double totalSum){
+        paymentService.makePay(order_id, totalSum);
+        orderDAO.changeOrderStatus(order_id, Status.PAID);
     }
 }

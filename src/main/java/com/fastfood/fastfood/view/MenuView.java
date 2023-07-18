@@ -13,6 +13,7 @@ import com.fastfood.fastfood.dao.DishDAO;
 import com.fastfood.fastfood.dao.OrderDAO;
 import com.fastfood.fastfood.entity.Dish;
 import com.fastfood.fastfood.entity.Order;
+import com.fastfood.fastfood.service.MakeOrderService;
 import com.fastfood.fastfood.service.PaymentService;
 import org.primefaces.model.ResponsiveOption;
 
@@ -25,7 +26,7 @@ public class MenuView implements Serializable {
     @Inject
     private DishDAO dishDAO;
     @Inject
-    private PaymentService paymentService;
+    private MakeOrderService makeOrderService;
 
     private List<ResponsiveOption> responsiveOptions;
 
@@ -53,7 +54,7 @@ public class MenuView implements Serializable {
 
         orderDAO.saveOrderDishes(order);
 
-        paymentService.makePay(order.getId(), totalSum);
+        makeOrderService.payOrder(order.getId(), totalSum);
 
         selectDishes.clear();
         totalSum = 0;

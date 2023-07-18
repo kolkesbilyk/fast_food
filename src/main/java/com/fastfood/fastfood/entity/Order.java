@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Order {
     private long id;
+    private Status status;
     private List<Dish> dishes;
     private double totalSum;
     private Date created;
@@ -20,6 +21,14 @@ public class Order {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public List<Dish> getDishes() {
@@ -102,6 +111,6 @@ public class Order {
     }
 
     public enum Status {
-        REGISTERED, PAID, IN_WORK, DONE, ISSUED
+        REGISTERED, PAID, IN_WORK, DONE, ISSUED, TIMEOUT_CANCEL
     }
 }

@@ -83,13 +83,12 @@ public class OrderDAO implements Serializable {
         String sql = "SELECT o.*, od.dish_id\n"
             + "from back.order_dishes od, back.orders o\n"
             + "WHERE o.id = ? AND\n"
-            + "      o.id = od.order_id AND"
-            + "      o.changed IS NULL ;";
+            + "      o.id = od.order_id;";
         try(Connection connection = ConnectionPool.getConn();
             PreparedStatement ps = connection.prepareStatement(sql)){
                 ps.setLong(1, id);
                 try(ResultSet rs = ps.executeQuery()){
-                    if(rs.next()) {
+                    if (rs.next()) {
                         Order order = loadOrderFromResultSet(rs);
                         while (rs.next()) {
                             dishes.add(dishDAO.getDishById(connection, rs.getInt("dish_id")));
@@ -107,6 +106,7 @@ public class OrderDAO implements Serializable {
     private Order loadOrderFromResultSet(ResultSet rs) throws SQLException {
         Order order = new Order();
         order.setId(rs.getLong("id"));
+        order.setStatus(Status.valueOf(rs.getString("status")));
         order.setTotalSum(rs.getDouble("total_sum"));
         order.setCreated(rs.getTimestamp("created"));
         order.setChanged(rs.getTimestamp("changed"));
