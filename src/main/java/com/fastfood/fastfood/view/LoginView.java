@@ -12,7 +12,7 @@ import com.fastfood.fastfood.exception.AuthException;
 import com.fastfood.fastfood.exception.DaoException;
 import com.fastfood.fastfood.utils.Util;
 
-@Named
+@Named(value = "loginBean")
 @ViewScoped
 public class LoginView implements Serializable {
 

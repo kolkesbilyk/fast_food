@@ -16,7 +16,7 @@ import com.fastfood.fastfood.entity.Order;
 import com.fastfood.fastfood.service.PaymentService;
 import org.primefaces.model.ResponsiveOption;
 
-@Named
+@Named(value = "menuBean")
 @SessionScoped
 public class MenuView implements Serializable {
 

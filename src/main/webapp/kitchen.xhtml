@@ -11,13 +11,13 @@
 </h:head>
 <h:body>
   <h:form id="KitchenForm">
-    <p:dataTable id="orderDt" value="#{kitchenView.orders}" var="order" rowKey="#{order.id}" tableStyle="table-layout: auto">
+    <p:dataTable id="orderDt" value="#{kitchenBean.orders}" var="order" rowKey="#{order.id}" tableStyle="table-layout: auto">
       <p:column headerText="Action" style="width: 1px; white-space: nowrap;">
         <p:commandButton icon="fa fa-edit" style="width: 30px"
 
             oncomplete="PF('dlg1').show()"
         >
-          <f:setPropertyActionListener target="#{order}" value="#{kitchenView.selectedOrder}"/>
+          <f:setPropertyActionListener target="#{order}" value="#{kitchenBean.selectedOrder}"/>
           <f:param name="order_id" value="#{order.id}"/>
         </p:commandButton>
       </p:column>
@@ -58,7 +58,7 @@
 <!--  </h:form>-->
 
   <p:dialog header="Header" widgetVar="dlg1" minHeight="40" width="350" showEffect="fade">
-    <p class="m-0">#{orderView.order}</p>
+    <p class="m-0">#{orderBean.order}</p>
   </p:dialog>
 
   <p:dialog header="Header" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade" modal="true">

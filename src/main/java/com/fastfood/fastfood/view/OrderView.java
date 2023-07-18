@@ -4,15 +4,15 @@ import java.io.Serializable;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.fastfood.fastfood.entity.Order;
 
-@Named
-@SessionScoped
+@Named(value = "orderBean")
+@ViewScoped
 public class OrderView implements Serializable {
 
     private Order order;

@@ -15,7 +15,7 @@ import javax.inject.Named;
 import com.fastfood.fastfood.dao.OrderDAO;
 import com.fastfood.fastfood.entity.Order;
 
-@Named
+@Named(value = "kitchenBean")
 @ViewScoped
 public class KitchenView implements Serializable {
 

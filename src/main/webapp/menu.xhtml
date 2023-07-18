@@ -29,7 +29,7 @@
 
   <div class="product card">
     <h:form id="menuForm">
-      <p:dataScroller value="#{menuView.dishes}" var="dish" chunkSize="10" mode="inline">
+      <p:dataScroller value="#{menuBean.dishes}" var="dish" chunkSize="10" mode="inline">
         <f:facet name="header">
           Scroll Down to Load More Products
         </f:facet>
@@ -46,20 +46,20 @@
               <h:outputText value="#{dish.prize}" styleClass="product-price">
                 <f:convertNumber currencySymbol="$" type="currency"/>
               </h:outputText>
-              <p:commandButton value="Add To Buy Bucket" icon="pi pi-shopping-cart" update="@form" actionListener="#{menuView.addDishToProductBucket(dish.id)}">
+              <p:commandButton value="Add To Buy Bucket" icon="pi pi-shopping-cart" update="@form" actionListener="#{menuBean.addDishToProductBucket(dish.id)}">
               </p:commandButton>
               <hr/>
             </div>
           </div>
         </div>
       </p:dataScroller>
-      <c:if test="#{menuView.selectDishes.size() > 0}">
+      <c:if test="#{menuBean.selectDishes.size() > 0}">
       <div class="card">
-        <p:commandButton id="pay" value="Pay order" style="background-color: green" update="@form" icon="pi pi-check" actionListener="#{menuView.payOrder()}"/>
-        <p:carousel value="#{menuView.selectDishes}" var="dish" numVisible="3" numScroll="1">
+        <p:commandButton id="pay" value="Pay order" style="background-color: green" update="@form" icon="pi pi-check" actionListener="#{menuBean.payOrder()}"/>
+        <p:carousel value="#{menuBean.selectDishes}" var="dish" numVisible="3" numScroll="1">
 
           <f:facet name="header">
-            <h5>Your order total sum #{menuView.totalSum} $</h5>
+            <h5>Your order total sum #{menuBean.totalSum} $</h5>
           </f:facet>
           <div class="product-item">
             <div class="product-item-content">
@@ -74,7 +74,7 @@
                   </h:outputText>
                 </h6>
                 <p:commandButton id="remove" value="Remove this dish" update="@form" icon="pi pi-times" style="background-color: #e82424"
-                    actionListener="#{menuView.removeDishFromOrder(dish.id)}"/>
+                    actionListener="#{menuBean.removeDishFromOrder(dish.id)}"/>
               </div>
             </div>
           </div>

@@ -15,17 +15,17 @@
       <p:autoUpdate/>
     </p:messages>
 
-    <p:inputText placeholder="Username" value="#{loginView.login}" id="login" required="true" requiredMessage="Login cannot be empty"
+    <p:inputText placeholder="Username" value="#{loginBean.login}" id="login" required="true" requiredMessage="Login cannot be empty"
         validatorMessage="The length of the login exist between 3 and 32 chapters">
       <f:validateLength minimum="3" maximum="32"/>
     </p:inputText>
     <p:message for="login"/>
 
-    <p:password placeholder="Password" value="#{loginView.password}" id="password" required="true" requiredMessage="Password cannot be empty"
+    <p:password placeholder="Password" value="#{loginBean.password}" id="password" required="true" requiredMessage="Password cannot be empty"
         password="true" redisplay="true"/>
     <p:message for="password"/>
 
-    <p:commandButton id="loginBtn" actionListener="#{loginView.login()}" value="Login" icon="fa fa-user"/>
+    <p:commandButton id="loginBtn" actionListener="#{loginBean.login()}" value="Login" icon="fa fa-user"/>
 
   </h:form>
 </h:body>
