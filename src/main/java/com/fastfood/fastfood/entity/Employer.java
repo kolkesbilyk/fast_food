@@ -2,16 +2,11 @@ package com.fastfood.fastfood.entity;
 
 import java.util.Date;
 
-public class Employer {
-    private int id;
+public class Employer extends AuthUser{
     private Role role;
     private String firstName;
     private String lastName;
-    private String login;
-    private String password;
     private String email;
-    private Date created;
-    private Date deactivated;
     private int author;
     private int parentId;
 

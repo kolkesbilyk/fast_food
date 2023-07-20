@@ -11,6 +11,7 @@ import com.fastfood.fastfood.entity.Employer;
 import com.fastfood.fastfood.entity.Employer.Role;
 import com.fastfood.fastfood.exception.AuthException;
 import com.fastfood.fastfood.exception.DaoException;
+import com.fastfood.fastfood.exception.EmployerAuthException;
 
 public class EmployerDAO implements Serializable {
 
@@ -30,11 +31,11 @@ public class EmployerDAO implements Serializable {
                 if (rs.next()) {
                     return loadFromResultSet(rs);
                 }
-                throw new AuthException(login, password);
+                throw new EmployerAuthException(login, password);
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            throw new DaoException("Employer", e);
+            throw new DaoException("Error load employer with login: " + login, e);
         }
     }
 

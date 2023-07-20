@@ -14,6 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.fastfood.fastfood.auth.Auth;
 import com.fastfood.fastfood.dao.DishDAO;
 import com.fastfood.fastfood.dao.OrderDAO;
 import com.fastfood.fastfood.dto.CheckOrderResponse;
@@ -26,6 +27,7 @@ import com.fastfood.fastfood.entity.Order;
 import com.fastfood.fastfood.service.MakeOrderService;
 
 @Path("/fast_food")
+@Auth
 public class FastFoodApi {
 
     @Inject

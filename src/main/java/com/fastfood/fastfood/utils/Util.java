@@ -7,11 +7,26 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+
+import org.apache.commons.codec.binary.Hex;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Util {
 
@@ -66,5 +81,53 @@ public class Util {
         HttpServletRequest serreq = (HttpServletRequest) ctx.getExternalContext().getRequest();
         String url = ((new HttpServletRequestWrapper(serreq)).getRequestURL()).toString();
         return url.substring(0, url.indexOf("/", 9)) + serreq.getContextPath();
+    }
+
+    public static Map<String, Object> jsonToMap(JSONObject object) throws JSONException {
+        Map<String, Object> map = new HashMap<>();
+
+        Iterator<String> keysItr = object.keys();
+        while (keysItr.hasNext()) {
+            String key = keysItr.next();
+            Object value = object.get(key);
+
+            if (value instanceof JSONArray) {
+                value = jsonToList((JSONArray) value);
+            } else if (value instanceof JSONObject) {
+                value = jsonToMap((JSONObject) value);
+            }
+            map.put(key, value);
+        }
+        return map;
+    }
+
+    public static List<Object> jsonToList(JSONArray array) throws JSONException {
+        List<Object> list = new ArrayList<>();
+        for (int i = 0; i < array.length(); i++) {
+            Object value = array.get(i);
+            if (value instanceof JSONArray) {
+                value = jsonToList((JSONArray) value);
+            } else if (value instanceof JSONObject) {
+                value = jsonToMap((JSONObject) value);
+            }
+            list.add(value);
+        }
+        return list;
+    }
+
+    public enum Algorithm {
+        HmacMD5, HmacSHA256, HmacSHA512
+    }
+
+    public static String hmac(String data, String key, Algorithm algorithm) throws SecurityException {
+        try {
+            Mac mac = Mac.getInstance(algorithm.name());
+            SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), algorithm.name());
+            mac.init(secret_key);
+
+            return Hex.encodeHexString(mac.doFinal(data.getBytes(StandardCharsets.UTF_8)));
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            throw new SecurityException(e);
+        }
     }
 }
